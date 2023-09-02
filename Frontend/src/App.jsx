@@ -67,10 +67,18 @@ function App() {
         </form>
         <p className="mt-10 text-center">
           Belum punya akun?
-          <span className="text-[#4F46E5]">Daftar sekarang, gratis!</span>
+          <span className="text-[#4F46E5]"> Daftar sekarang, gratis!</span>
         </p>
       </section>
-      <section className="bg-right-side bg-center bg-no-repeat bg-cover " />
+      <section className="pb-[13rem] bg-right-side bg-center bg-no-repeat bg-cover flex flex-col-reverse items-center justify-between">
+        <div className="max-w-xl gap-4">
+          <p className="text-sm mb-4 text-white/60">NAMANYAJUGABELAJAR.IO</p>
+          <p className="text-3xl text-white">
+            Belajar secara online semakin mudah – tetep belajar walaupun pake
+            kuota dari Kemendikbud hehe~
+          </p>
+        </div>
+      </section>
     </main>
   );
 }

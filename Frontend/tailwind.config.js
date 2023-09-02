@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily:{
+			sans: ['Arial', 'sans-serif']
+		},
+    extend: {
+      backgroundImage: {
+        'right-side': "url('/images/right-side.svg')",
+      }
+    },
   },
   plugins: [],
 };

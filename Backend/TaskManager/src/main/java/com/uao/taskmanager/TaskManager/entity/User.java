@@ -31,10 +31,10 @@ public class User implements UserDetails {
   @Column
   private Integer id;
 
-  @Column
+  @Column(name = "FIRST_NAME")
   private String firstName;
 
-  @Column
+  @Column(name = "LAST_NAME")
   private String lastName;
   @Column
   private String email;

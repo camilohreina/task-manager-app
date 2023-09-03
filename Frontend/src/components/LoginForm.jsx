@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
+import { signIn } from "../services/login";
+import toast, { Toaster } from "react-hot-toast";
 import PropTypes from "prop-types";
-
 export function LoginForm() {
   ErrorMessage.propTypes = {
     field: PropTypes.string,
@@ -12,8 +13,18 @@ export function LoginForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const errorSignIn = ({ message }) => toast.error(message);
+  const successSignIn = ({ message }) => toast.success(message);
+
+  const onSubmit = async ({ email, password }) => {
+    try {
+      const dataUser = await signIn({ email, password });
+      console.log(dataUser);
+      successSignIn({ message: dataUser.message });
+    } catch (error) {
+      console.log(error);
+      errorSignIn({ message: error.message });
+    }
   };
 
   function ErrorMessage({ field }) {
@@ -77,6 +88,7 @@ export function LoginForm() {
       >
         Masuk
       </button>
+      <Toaster />
     </form>
   );
 }

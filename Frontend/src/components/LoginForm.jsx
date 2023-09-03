@@ -1,6 +1,27 @@
+import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
+
 export function LoginForm() {
+  ErrorMessage.propTypes = {
+    field: PropTypes.string,
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  function ErrorMessage({ field }) {
+    return <small className="text-red-400">{errors[field].message}</small>;
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-6">
         <label
           htmlFor="email"
@@ -11,10 +32,16 @@ export function LoginForm() {
         <input
           type="email"
           id="email"
+          {...register("email", {
+            required: "This field is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
           className=" text-sm h-16 rounded-lg block w-full p-2.5 bg-[#F3F4F6]"
-          placeholder="name@flowbite.com"
-          required
         />
+        {errors.email && <ErrorMessage field="email" />}
       </div>
       <div className="mb-6">
         <label
@@ -25,10 +52,11 @@ export function LoginForm() {
         </label>
         <input
           type="password"
+          {...register("password", { required: "This field is required" })}
           id="password"
           className=" text-sm h-16 rounded-lg block w-full p-2.5 bg-[#F3F4F6]"
-          required
         />
+        {errors.password && <ErrorMessage field="password" />}
       </div>
       <div className="flex items-start mb-6">
         <div className="flex items-center h-5">
@@ -37,13 +65,9 @@ export function LoginForm() {
             type="checkbox"
             value=""
             className="w-4 h-4  ounded focus:ring-3 focus:ring-blue-300 bg-[#F3F4F6] "
-            required
           />
         </div>
-        <label
-          htmlFor="remember"
-          className="ml-2 text-sm font-medium  dark:text-gray-300"
-        >
+        <label htmlFor="remember" className="ml-2 text-sm font-base">
           Ingat saya
         </label>
       </div>

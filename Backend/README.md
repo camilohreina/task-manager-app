@@ -56,4 +56,4 @@ El Backend de la aplicación está desarrollado en JAVA 17 utilizando el Framewo
     `Agregar el header Authorization con el token generado. Por ejemplo Authorization: Bearer JWT_TOKEN_GENERADO`
     
 
-
+4. Si consume el servicio correctamente le debe retornar **PING** con un codigo http 200. De lo contrario, retornará un codigo http 403.

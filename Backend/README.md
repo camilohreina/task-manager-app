@@ -32,8 +32,8 @@ El Backend de la aplicación está desarrollado en JAVA 17 utilizando el Framewo
 
 1. Para el efecto de pruebas, se creo un usuario por defecto para probar el inicio de sesión. Cree una petición con los siguientes parametros:
 
-    `URL: http://localhost:8000/taskmanager/api/v1/authentication/signin`
-    `Metodo: POST`
+    `URL: http://localhost:8000/taskmanager/api/v1/authentication/signin` <br>
+    `Metodo: POST` <br>
     `Payload:` 
     ```json 
     {
@@ -51,8 +51,8 @@ El Backend de la aplicación está desarrollado en JAVA 17 utilizando el Framewo
 
 3. Para comprobar el token generado, por favor cree la siguiente petición:
 
-    `URL: http://localhost:8000/taskmanager/api/v1/ping`
-    `Metodo: GET`
+    `URL: http://localhost:8000/taskmanager/api/v1/ping` <br>
+    `Metodo: GET` <br>
     `Agregar el header Authorization con el token generado. Por ejemplo Authorization: Bearer JWT_TOKEN_GENERADO`
     
 

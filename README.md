@@ -10,6 +10,10 @@ Aplicación de gestión de tareas.
 - SpringBoot
 - H2
 
+## Porqué el uso de estas tecnologías
+- Poseemos conocimiento y experiencia previa en cada una de estas herramientas.
+- Tecnologías populares, amplio mercado laboral y comunidad 
+
 ## IDE Utilizados
 
 - Visual Studio Code

@@ -10,6 +10,14 @@ Aplicación de gestión de tareas.
 - SpringBoot
 - H2
 
+## IDE Utilizados
+
+- Visual Studio Code
+- IntelliJ IDEA
+
+## Code Style Guide
+[Airbnb](https://github.com/airbnb/javascript)
+
 ## Integrantes
 
 - Andres Soto

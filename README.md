@@ -1,3 +1,18 @@
-# task-manager-app
+# Task Manager App
 
-dqvdd
+Aplicación de gestión de tareas.
+
+## Tecnologías
+
+- JavaScript
+- ReactJs
+- TailwindCSS
+- SpringBoot
+- H2
+
+## Integrantes
+
+- Andres Soto
+- Camilo Hernández
+- David Ordoñez
+- Juan Duque

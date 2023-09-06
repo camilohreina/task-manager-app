@@ -2,8 +2,6 @@ import {API_URL} from '../config'
 
 
 export const signIn = async ({ email, password }) => {
-console.log(email, password)
-console.log(API_URL)
 
 try {
     const response = await fetch(`${API_URL}authentication/signin`, {

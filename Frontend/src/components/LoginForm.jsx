@@ -19,10 +19,8 @@ export function LoginForm() {
   const onSubmit = async ({ email, password }) => {
     try {
       const dataUser = await signIn({ email, password });
-      console.log(dataUser);
       successSignIn({ message: dataUser.message });
     } catch (error) {
-      console.log(error);
       errorSignIn({ message: error.message });
     }
   };

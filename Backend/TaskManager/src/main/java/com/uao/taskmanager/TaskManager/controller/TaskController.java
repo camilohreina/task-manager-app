@@ -30,4 +30,9 @@ public class TaskController {
     return ResponseEntity.ok(taskService.findTasksByUser());
   }
 
+  @PostMapping
+  public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
+    return ResponseEntity.ok(taskService.createTask(taskDTO));
+  }
+
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TaskDTO {
 
+
   private Integer id;
-  private String description;
-  private State state;
+  @NonNull private String description;
+  @NonNull private State state;
 }

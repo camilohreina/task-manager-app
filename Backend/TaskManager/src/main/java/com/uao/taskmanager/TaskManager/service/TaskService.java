@@ -26,6 +26,16 @@ public class TaskService {
 
     return taskRepository.findByUser(user).stream().map(taskMapper::buildDTO).toList();
 
+  }
+  public TaskDTO createTask(TaskDTO taskDTO) {
+    var user = authenticationService.getCurrentuser();
+    if(taskDTO.getDescription().isEmpty()) {
+      throw new IllegalArgumentException("Incorrect parameters");
+    }
+    var task = taskMapper.buildEntity(taskDTO);
+    task.setUser(user);
+    taskRepository.save(task);
+    return taskMapper.buildDTO(task);
 
   }
 }

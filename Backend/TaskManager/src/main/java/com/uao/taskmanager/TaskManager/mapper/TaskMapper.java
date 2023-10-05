@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
     TaskDTO buildDTO(Task task);
+    Task buildEntity(TaskDTO taskDTO);
 
 }

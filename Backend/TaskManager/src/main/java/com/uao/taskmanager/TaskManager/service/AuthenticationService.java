@@ -10,6 +10,10 @@ import com.uao.taskmanager.TaskManager.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +47,15 @@ public class AuthenticationService {
         .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
     var jwt = jwtService.generateToken(user);
     return JwtAuthenticationRS.builder().token(jwt).build();
+  }
+
+  public User getCurrentuser() {
+    Authentication auth = SecurityContextHolder
+        .getContext()
+        .getAuthentication();
+    UserDetails userDetail = (UserDetails) auth.getPrincipal();
+
+    return this.userRepository.findByEmail(userDetail.getUsername()).orElseThrow(() -> new UsernameNotFoundException("An error has ocurred getting user data"));
+
   }
 }

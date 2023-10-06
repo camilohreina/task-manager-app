@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ColumnContainer } from "./ColumnContainer";
 import {
   DndContext,
@@ -17,15 +17,15 @@ import {
 
 const defaultCols = [
   {
-    id: "todo",
+    id: "TODO",
     title: "To Do",
   },
   {
-    id: "progress",
+    id: "PROGRESS",
     title: "In Progress",
   },
   {
-    id: "done",
+    id: "DONE",
     title: "Done",
   },
 ];
@@ -33,68 +33,68 @@ const defaultCols = [
 const defaultTasks = [
   {
     id: "1",
-    columnId: "todo",
+    columnId: "TODO",
     content: "List admin APIs for dashboard",
   },
   {
     id: "2",
-    columnId: "todo",
+    columnId: "TODO",
     content:
       "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
   },
   {
     id: "3",
-    columnId: "progress",
+    columnId: "PROGRESS",
     content: "Conduct security testing",
   },
   {
     id: "4",
-    columnId: "progress",
+    columnId: "PROGRESS",
     content: "Analyze competitors",
   },
   {
     id: "5",
-    columnId: "done",
+    columnId: "DONE",
     content: "Create UI kit documentation",
   },
   {
     id: "6",
-    columnId: "done",
+    columnId: "DONE",
     content: "Dev meeting",
   },
   {
     id: "7",
-    columnId: "done",
+    columnId: "DONE",
     content: "Deliver dashboard prototype",
   },
   {
     id: "8",
-    columnId: "todo",
+    columnId: "TODO",
     content: "Optimize application performance",
   },
   {
     id: "9",
-    columnId: "todo",
+    columnId: "TODO",
     content: "Implement data validation",
   },
   {
     id: "10",
-    columnId: "todo",
+    columnId: "TODO",
     content: "Design database schema",
   },
   {
     id: "11",
-    columnId: "todo",
+    columnId: "TODO",
     content: "Integrate SSL web certificates into workflow",
   },
   {
     id: "12",
-    columnId: "progress",
+    columnId: "PROGRESS",
     content: "Implement error logging and monitoring",
   },
   {
     id: "13",
-    columnId: "progress",
+    columnId: "PROGRESS",
     content: "Design and implement responsive UI",
   },
 ];
@@ -106,6 +106,19 @@ export default function KanbanBoard() {
   const [activeColumn, setActiveColumn] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeTask, setActiveTask] = useState(null);
+
+  useEffect(() => {
+    async function getTasks() {
+      try {
+        const tasks = await getTasksByUser();
+        console.log(tasks);
+        setTasks(tasks);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getTasks();
+  }, [tasks.length]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -196,16 +209,12 @@ export default function KanbanBoard() {
   }
 
   const createTask = async (columnId) => {
-    console.log(columnId);
-    const newTask = {
-      id: generateId(),
-      columnId,
-      content: `Task ${tasks.length + 1}`,
-    };
     try {
-      const dataTask = await getTasksByUser();
-      console.log(dataTask);
-      //setTasks([...tasks, newTask]);
+      const dataTask = await createTaskService({
+        columnId,
+        content: `Task ${tasks.length + 1}`,
+      });
+      setTasks([...tasks, dataTask]);
     } catch (error) {
       console.log(error);
     }
@@ -214,10 +223,6 @@ export default function KanbanBoard() {
   function deleteTask(id) {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
-  }
-
-  function generateId() {
-    return Math.floor(Math.random() * 10001);
   }
 
   function updateTask(id, content) {

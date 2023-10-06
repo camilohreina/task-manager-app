@@ -18,6 +18,40 @@ export const createTask = async ({ content, columnId }) => {
   }
 };
 
+export const updateTask = async (taskId, { content, columnId }) => {
+  try {
+    const response = await fetch(`${API_URL}task/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("userToken"),
+      },
+      body: JSON.stringify({ description: content, state: columnId }),
+    });
+    const data = await response.json();
+    return { id: data.id, title: data.description, columnId: data.state };
+  } catch (error) {
+    console.log(error);
+    throw new Error("Cannot create task");
+  }
+};
+
+export const deleteTask = async (taskId) => {
+  try {
+    await fetch(`${API_URL}task/${taskId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("userToken"),
+      },
+    });
+    return {};
+  } catch (error) {
+    console.log(error);
+    throw new Error("Cannot create task");
+  }
+};
+
 export const getTasksByUser = async () => {
   const token = localStorage.getItem("userToken");
 

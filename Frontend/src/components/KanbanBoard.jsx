@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ColumnContainer } from "./ColumnContainer";
 import {
   DndContext,
@@ -8,10 +8,13 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import debounce from "just-debounce-it";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import {
   createTask as createTaskService,
+  updateTask as updateTaskService,
+  deleteTask as deleteTaskService,
   getTasksByUser,
 } from "../services/tasks";
 
@@ -111,7 +114,6 @@ export default function KanbanBoard() {
     async function getTasks() {
       try {
         const tasks = await getTasksByUser();
-        console.log(tasks);
         setTasks(tasks);
       } catch (error) {
         console.log(error);
@@ -220,19 +222,37 @@ export default function KanbanBoard() {
     }
   };
 
-  function deleteTask(id) {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
+  const debouncedUpdateTask = useCallback(
+    debounce((id, content) => {
+      updateTaskService(id, {
+        content,
+      });
+    }, 300),
+    []
+  );
+
+  async function deleteTask(id) {
+    try {
+      await deleteTaskService(id);
+      const newTasks = tasks.filter((task) => task.id !== id);
+      setTasks(newTasks);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  function updateTask(id, content) {
-    const newTasks = tasks.map((task) => {
-      if (task.id !== id) return task;
-      return { ...task, content };
-    });
-
-    setTasks(newTasks);
-  }
+  const updateTask = async (id, content) => {
+    try {
+      const newTasks = tasks.map((task) => {
+        if (task.id !== id) return task;
+        return { ...task, content };
+      });
+      setTasks(newTasks);
+      debouncedUpdateTask(id, content);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="text-white bg-slate-900 m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]">

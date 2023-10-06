@@ -10,6 +10,10 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import {
+  createTask as createTaskService,
+  getTasksByUser,
+} from "../services/tasks";
 
 const defaultCols = [
   {
@@ -17,7 +21,7 @@ const defaultCols = [
     title: "To Do",
   },
   {
-    id: "doing",
+    id: "progress",
     title: "In Progress",
   },
   {
@@ -40,12 +44,12 @@ const defaultTasks = [
   },
   {
     id: "3",
-    columnId: "doing",
+    columnId: "progress",
     content: "Conduct security testing",
   },
   {
     id: "4",
-    columnId: "doing",
+    columnId: "progress",
     content: "Analyze competitors",
   },
   {
@@ -85,12 +89,12 @@ const defaultTasks = [
   },
   {
     id: "12",
-    columnId: "doing",
+    columnId: "progress",
     content: "Implement error logging and monitoring",
   },
   {
     id: "13",
-    columnId: "doing",
+    columnId: "progress",
     content: "Design and implement responsive UI",
   },
 ];
@@ -191,15 +195,21 @@ export default function KanbanBoard() {
     }
   }
 
-  function createTask(columnId) {
+  const createTask = async (columnId) => {
+    console.log(columnId);
     const newTask = {
       id: generateId(),
       columnId,
       content: `Task ${tasks.length + 1}`,
     };
-
-    setTasks([...tasks, newTask]);
-  }
+    try {
+      const dataTask = await getTasksByUser();
+      console.log(dataTask);
+      //setTasks([...tasks, newTask]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function deleteTask(id) {
     const newTasks = tasks.filter((task) => task.id !== id);

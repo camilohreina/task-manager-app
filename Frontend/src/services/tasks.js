@@ -32,7 +32,7 @@ export const updateTask = async (taskId, { content, columnId }) => {
     return { id: data.id, title: data.description, columnId: data.state };
   } catch (error) {
     console.log(error);
-    throw new Error("Cannot create task");
+    throw new Error("Cannot update task");
   }
 };
 
@@ -44,6 +44,7 @@ export const deleteTask = async (taskId) => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("userToken"),
       },
+      body: JSON.stringify({ id: taskId }),
     });
     return {};
   } catch (error) {

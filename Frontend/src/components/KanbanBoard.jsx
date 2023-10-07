@@ -11,6 +11,8 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import debounce from "just-debounce-it";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
+import { useLocation } from "wouter";
+import toast, { Toaster } from "react-hot-toast";
 import {
   createTask as createTaskService,
   updateTask as updateTaskService,
@@ -33,84 +35,19 @@ const defaultCols = [
   },
 ];
 
-const defaultTasks = [
-  {
-    id: "1",
-    columnId: "TODO",
-    content: "List admin APIs for dashboard",
-  },
-  {
-    id: "2",
-    columnId: "TODO",
-    content:
-      "Develop user registration functionality with OTP delivered on SMS after email confirmation and phone number confirmation",
-  },
-  {
-    id: "3",
-    columnId: "PROGRESS",
-    content: "Conduct security testing",
-  },
-  {
-    id: "4",
-    columnId: "PROGRESS",
-    content: "Analyze competitors",
-  },
-  {
-    id: "5",
-    columnId: "DONE",
-    content: "Create UI kit documentation",
-  },
-  {
-    id: "6",
-    columnId: "DONE",
-    content: "Dev meeting",
-  },
-  {
-    id: "7",
-    columnId: "DONE",
-    content: "Deliver dashboard prototype",
-  },
-  {
-    id: "8",
-    columnId: "TODO",
-    content: "Optimize application performance",
-  },
-  {
-    id: "9",
-    columnId: "TODO",
-    content: "Implement data validation",
-  },
-  {
-    id: "10",
-    columnId: "TODO",
-    content: "Design database schema",
-  },
-  {
-    id: "11",
-    columnId: "TODO",
-    content: "Integrate SSL web certificates into workflow",
-  },
-  {
-    id: "12",
-    columnId: "PROGRESS",
-    content: "Implement error logging and monitoring",
-  },
-  {
-    id: "13",
-    columnId: "PROGRESS",
-    content: "Design and implement responsive UI",
-  },
-];
-
 export default function KanbanBoard() {
   const [columns, setColumns] = useState(defaultCols);
-  const [tasks, setTasks] = useState(defaultTasks);
-
+  const [tasks, setTasks] = useState([]);
+  const [, setLocation] = useLocation();
   const [activeColumn, setActiveColumn] = useState(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
   const [activeTask, setActiveTask] = useState(null);
 
+  const sucessAlert = ({ message }) => toast.success(message);
+
   useEffect(() => {
+    if (!localStorage.getItem("userToken")) setLocation("/");
+
     async function getTasks() {
       try {
         const tasks = await getTasksByUser();
@@ -120,7 +57,7 @@ export default function KanbanBoard() {
       }
     }
     getTasks();
-  }, [tasks.length]);
+  }, [tasks.length, setLocation]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -155,8 +92,6 @@ export default function KanbanBoard() {
 
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
-
-    console.log("DRAG END");
 
     setColumns((columns) => {
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
@@ -204,7 +139,12 @@ export default function KanbanBoard() {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
 
         tasks[activeIndex].columnId = overId;
-        console.log("DROPPING TASK OVER COLUMN", { activeIndex });
+
+        debouncedUpdateTask(
+          tasks[activeIndex].id,
+          tasks[activeIndex].content,
+          overId
+        );
         return arrayMove(tasks, activeIndex, activeIndex);
       });
     }
@@ -223,10 +163,13 @@ export default function KanbanBoard() {
   };
 
   const debouncedUpdateTask = useCallback(
-    debounce((id, content) => {
+    debounce((id, content, columnId) => {
+      console.log(columnId);
       updateTaskService(id, {
         content,
+        columnId,
       });
+      sucessAlert({ message: "Task updated successfully" });
     }, 300),
     []
   );
@@ -234,6 +177,7 @@ export default function KanbanBoard() {
   async function deleteTask(id) {
     try {
       await deleteTaskService(id);
+      sucessAlert({ message: "Task deleted successfully" });
       const newTasks = tasks.filter((task) => task.id !== id);
       setTasks(newTasks);
     } catch (error) {
@@ -247,8 +191,9 @@ export default function KanbanBoard() {
         if (task.id !== id) return task;
         return { ...task, content };
       });
+      const task = newTasks.find((task) => task.id === id);
       setTasks(newTasks);
-      debouncedUpdateTask(id, content);
+      debouncedUpdateTask(id, content, task.columnId);
     } catch (error) {
       console.log(error);
     }
@@ -256,6 +201,7 @@ export default function KanbanBoard() {
 
   return (
     <div className="text-white bg-slate-900 m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]">
+      <Toaster />
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}

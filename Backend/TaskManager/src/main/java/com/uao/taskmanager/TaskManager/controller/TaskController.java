@@ -8,12 +8,7 @@ import com.uao.taskmanager.TaskManager.service.AuthenticationService;
 import com.uao.taskmanager.TaskManager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +28,16 @@ public class TaskController {
   @PostMapping
   public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
     return ResponseEntity.ok(taskService.createTask(taskDTO));
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO, @PathVariable Integer id) {
+    return ResponseEntity.ok(taskService.updateTask(id, taskDTO));
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<TaskDTO> deleteTask(@RequestBody TaskDTO taskDTO, @PathVariable Integer id) {
+    return ResponseEntity.ok(taskService.deleteTask(id));
   }
 
 }

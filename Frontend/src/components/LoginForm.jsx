@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { signIn } from "../services/login";
 import toast, { Toaster } from "react-hot-toast";
+import { useLocation } from "wouter";
+
 import PropTypes from "prop-types";
 export function LoginForm() {
   ErrorMessage.propTypes = {
     field: PropTypes.string,
   };
-
+  const [, setLocation] = useLocation();
   const {
     register,
     handleSubmit,
@@ -20,6 +22,7 @@ export function LoginForm() {
     try {
       const dataUser = await signIn({ email, password });
       successSignIn({ message: dataUser.message });
+      setTimeout(() => setLocation("/tasks"), 500);
     } catch (error) {
       errorSignIn({ message: error.message });
     }

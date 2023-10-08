@@ -12,6 +12,7 @@ try {
         body: JSON.stringify({ email, password }),
       });
     const data = await response.json()
+    localStorage.setItem('userToken', data.token)
     return{email, access_token : data.token, message: "Sucessfully logged"}
   } catch (error) {
     throw new Error("Invalid credentials")

@@ -8,6 +8,10 @@ export default {
     extend: {
       backgroundImage: {
         'right-side': "url('/images/right-side.svg')",
+      },
+      colors: {
+        "mainBackgroundColor": '#0D1117',
+        "columnBackgroundColor": '#161C22'
       }
     },
   },

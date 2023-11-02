@@ -14,4 +14,4 @@ jobs:
           cd ./Frontend
           npm install
           npm run build
-          npx netlify-cli deploy --dir=dist prod
+          npx netlify-cli deploy --dir=./dist prod

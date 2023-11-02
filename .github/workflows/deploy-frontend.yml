@@ -12,5 +12,6 @@ jobs:
             NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: |
           cd ./Frontend
-          npm run predeploy
+          npm install
+          npm run build
           npx netlify-cli deploy --dir=dist prod

@@ -5,11 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build
-        uses: actions/checkout@v1
+        - uses: actions/checkout@v4
         env: 
           NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
           NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
-        run: |
+        - run: |
           npm 
           npm run build
           npx netlify-cli deploy --dir=dist prod

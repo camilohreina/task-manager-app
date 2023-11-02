@@ -1,15 +1,16 @@
 name: Deploy Frontend React
-on: push
+on: [push]
 jobs:
-  build:
+  Build Frontend:
     runs-on: ubuntu-latest
     steps:
-      - name: Build
-        uses: actions/checkout@v1
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Enter to frontend
         env: 
-          NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
-          NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
+            NETLIFY_SITE_ID: ${{secrets.NETLIFY_SITE_ID}}
+            NETLIFY_AUTH_TOKEN: ${{secrets.NETLIFY_AUTH_TOKEN}}
         run: |
-          npm 
+          cd ./Frontend
           npm run build
           npx netlify-cli deploy --dir=dist prod

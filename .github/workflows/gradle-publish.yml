@@ -29,4 +29,4 @@ jobs:
         run: chmod +x ./Backend/TaskManager/gradlew
 
       - name: Build with Gradle
-        run: ./Backend/TaskManager/gradlew build
+        run: ./Backend/TaskManager/gradlew

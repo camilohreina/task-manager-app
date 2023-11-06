@@ -26,7 +26,7 @@ jobs:
         run: cd Backend/TaskManager
 
       - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./Backend/TaskManager/gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./Backend/TaskManager/gradlew build

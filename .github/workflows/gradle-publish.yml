@@ -1,4 +1,4 @@
-name: Build Java Spring Boot with Gradle
+name: Build and Run Java Spring Boot with Gradle
 
 on:
   push:
@@ -20,7 +20,9 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adopt'
+
+      - name: Grant execute permission to gradlew.bat
+        run: chmod +x ./Backend/TaskManager/gradlew.bat
 
       - name: Build with Gradle
-        run: ./Backend/TaskManager/gradlew.bat
+        run: ./Backend/TaskManager/gradlew.bat build

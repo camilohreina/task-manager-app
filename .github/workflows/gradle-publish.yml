@@ -22,8 +22,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Grant execute permission to gradlew.bat
-        run: chmod +x ./Backend/TaskManager/gradlew.bat
+      - name: Change directory to project root
+        run: cd Backend/TaskManager
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./Backend/TaskManager/gradlew.bat build
+        run: ./gradlew build

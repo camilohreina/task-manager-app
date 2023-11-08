@@ -1,5 +1,8 @@
 name: Deploy Frontend React
-on: [push]
+on:
+  push:
+    branches:
+      - dev
 jobs:
   Build-Frontend:
     runs-on: ubuntu-latest
